@@ -27,7 +27,6 @@ GPIO.setup(LED, GPIO.OUT)
 
 sensörverisi= dht11.DHT11(14)
 
-
 while True:
     okunan= sensörverisi.read()
     if  okunan.temperature<20 :
