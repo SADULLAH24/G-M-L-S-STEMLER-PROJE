@@ -1,0 +1,48 @@
+
+import RPi.GPIO as GPIO
+import time
+import dht11
+
+
+GPIO.setmode(GPIO.BOARD)
+
+LED=11
+FANMOTORU1 = 13
+FANMOTORU2 = 15
+FANMOTORU3 = 16
+RESİSTANCE = 16
+PENCEREMOTORU1 = 18
+PENCEREMOTORU2 = 19
+PENCEREMOTORU3 = 21
+
+
+GPIO.setup(FANMOTORU1, GPIO.OUT)
+GPIO.setup(FANMOTORU2, GPIO.OUT)
+GPIO.setup(FANMOTORU3, GPIO.OUT)
+GPIO.setup(RESİSTANCE, GPIO.OUT)
+GPIO.setup(PENCEREMOTORU1, GPIO.OUT)
+GPIO.setup(PENCEREMOTORU2, GPIO.OUT)
+GPIO.setup(PENCEREMOTORU3, GPIO.OUT)
+GPIO.setup(LED, GPIO.OUT)
+
+sensörverisi= dht11.DHT11(14)
+
+
+while True:
+    okunan= sensörverisi.read()
+    if  okunan.temperature<20 :
+        print "SICAKLIK 13 DERECE ALTINDA..(FAN MOTORU VE REZİSTANS ÇALIŞTI)"
+        GPIO.output(FANMOTORU1, GPIO.HIGH)
+        GPIO.output(FANMOTORU2, GPIO.LOW)
+        GPIO.output(FANMOTORU3, GPIO.HIGH)
+        GPIO.output(RESİSTANCE, GPIO.HİGH)
+    elif 20<okunan.temperature:
+        print "SICAKLIK 20 DERECE ÜSTÜNDE ..(PENCERE MOTORU AÇIK  FANMOTORU VE RESİSTANCE KAPALI ..)"
+        GPIO.output(PENCEREMOTORU1, GPIO.HIGH)
+        GPIO.output(PENCEREMOTORU2, GPIO.LOW)
+        GPIO.output(PENCEREMOTORU3, GPIO.HIGH)
+    else :
+        GPIO.output(Led, True)
+        time.sleep(1)
+
+
